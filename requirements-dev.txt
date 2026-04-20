@@ -1,0 +1,13 @@
+# ==========================================
+# BIA Power Price Dashboard - Development Requirements
+# ==========================================
+
+# 1. Importiert automatisch alle produktiven Bibliotheken
+-r requirements.txt
+
+# 2. Testing-Framework
+pytest>=8.0.0
+pytest-cov>=5.0.0
+
+# 3. Linting & Code-Qualität (Wie in der CI-Pipeline definiert)
+flake8>=7.0.0

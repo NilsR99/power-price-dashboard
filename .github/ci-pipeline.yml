@@ -1,0 +1,42 @@
+name: BIA Power-Price-Dashboard - CI Pipeline
+
+# 1. WANN soll die Pipeline starten? (Trigger)
+on:
+  push:
+    branches: [ "main" ] # Startet bei jedem Upload in den Haupt-Branch
+  pull_request:
+    branches: [ "main" ] # Startet, wenn jemand Änderungen vorschlägt
+
+# 2. WAS soll gemacht werden? (Jobs)
+jobs:
+  build-and-test:
+    # Wir mieten uns für wenige Sekunden einen kostenlosen Linux-Server von GitHub
+    runs-on: ubuntu-latest
+
+    # 3. WIE sehen die exakten Schritte aus? (Steps)
+    steps:
+    - name: Repository klonen (Code auf den Server laden)
+      uses: actions/checkout@v3
+
+    - name: Python 3.13.7 Umgebung aufsetzen
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.13.7"
+
+    - name: Abhängigkeiten installieren (Die Krux!)
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+        # ACHTUNG: Hier crasht die Pipeline, wenn die requirements-dev.txt fehlt!
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+    - name: Code-Qualität prüfen (Linting mit Flake8)
+      run: |
+        # Stoppt den Build bei harten Syntaxfehlern oder undefinierten Variablen
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        
+    
+    - name: Unit Tests & Coverage ausführen
+      run: |
+        # Dieser Befehl führt die Tests aus und druckt die Coverage-Tabelle in die GitHub-Logs
+        pytest tests/ -v --cov=merge_script --cov-report=term-missing

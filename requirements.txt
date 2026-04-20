@@ -1,0 +1,30 @@
+# ==========================================
+# BIA Power Price Dashboardp - Production Requirements
+# ==========================================
+
+# Dashboard & Interaktive Visualisierung (Strikt limitiert für UI-Stabilität)
+streamlit~=1.55.0
+plotly>=6.6.0
+
+# Datenverarbeitung & Kern-Bibliotheken
+pandas>=2.2.0,<3.0.0
+numpy>=2.1.0,<3.0.0
+
+# API-Abfragen & Caching
+requests>=2.31.0
+requests-cache>=1.2.0
+retry-requests>=2.0.0
+
+# Spezifische Datenquellen (Open-Meteo)
+openmeteo-requests>=1.3.0
+
+# System & Konfiguration
+python-dotenv>=1.2.0
+pytz>=2024.1
+
+# mathematische Funktion für die Trendlinie
+statsmodels
+
+# PostgreSQL-Client-Treiber für Python & Toolkit + ORM (Object Relational Mapper)
+psycopg2-binary==2.9.11
+SQLAlchemy==2.0.48
