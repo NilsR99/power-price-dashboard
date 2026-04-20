@@ -1,3 +1,45 @@
+# ==========================================
+# BIA Power Dashboard - Git Ignore Configuration
+# ==========================================
+
+# 1. Sicherheitskritische Dateien (SECRETS)
+.env
+.env.*
+
+# 2. Virtuelle Umgebungen
+# Die Umgebung ist lokal und wird von anderen via requirements.txt neu gebaut
+.venv/
+venv/
+env/
+
+# 3. Daten & Outputs
+# Keine generierten JSON-Dateien, CSVs oder Datenbanken ins Repo
+data/
+*.json
+*.csv
+
+# 4. Python Cache & Kompilierte Dateien
+# Python generiert diese temporären Dateien bei der Ausführung automatisch
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 5. Betriebssystem-Müll
+# Versteckte Dateien, die Windows oder macOS automatisch in Ordnern ablegen
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 6. IDEs & Editoren
+# Konfigurationseinstellungen von VS Code, PyCharm etc.
+.vscode/
+.idea/
+
+# Testing
+.coverage
+.cache.sqlite
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

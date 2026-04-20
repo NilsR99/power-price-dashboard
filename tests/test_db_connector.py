@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from warehouse.db_connector import get_db_engine
+from warehouse.db.connector import get_db_engine
 
-@patch("warehouse.db_connector.create_engine")
-@patch("warehouse.db_connector.os.getenv")
+@patch("warehouse.db.connector.create_engine")
+@patch("warehouse.db.connector.os.getenv")
 def test_get_db_engine_success(mock_getenv, mock_create_engine):
     # Setup der simulierten Umgebungsvariablen
     def mock_env_vars(key):
@@ -25,7 +25,7 @@ def test_get_db_engine_success(mock_getenv, mock_create_engine):
     mock_create_engine.assert_called_once_with(expected_conn_string)
     assert isinstance(engine, MagicMock)
 
-@patch("warehouse.db_connector.os.getenv")
+@patch("warehouse.db.connector.os.getenv")
 def test_get_db_engine_missing_credentials(mock_getenv):
     # Simuliere, dass Variablen fehlen (Rückgabe None)
     mock_getenv.return_value = None

@@ -2,7 +2,8 @@ import pandas as pd
 import logging
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
-from warehouse.db_connector import get_db_engine
+from sqlalchemy.dialects.postgresql import insert
+from warehouse.db.connector import get_db_engine
 
 # Konfiguration des Loggers (Idealerweise zentral in einer config.py)
 logger = logging.getLogger(__name__)
@@ -47,19 +48,37 @@ def generate_dim_time(start_year: int = 1950, end_year: int = 2026, local_tz: st
     return df[['time_id', 'datetime_utc', 'datetime_local', 'year', 'month', 'day', 'hour', 'weekday', 'is_weekend']]
 
 
+def postgres_do_nothing(table, conn, keys, data_iter):
+    """
+    Spezifische PostgreSQL-Erweiterung für Pandas.
+    Führt einen INSERT aus, überspringt aber leise alle bereits existierenden Primary Keys.
+    """
+    data = [dict(zip(keys, row)) for row in data_iter]
+    
+    # Baut den INSERT-Befehl
+    insert_stmt = insert(table.table).values(data)
+    
+    # Fügt die "ON CONFLICT DO NOTHING" Regel für den Primärschlüssel hinzu
+    do_nothing_stmt = insert_stmt.on_conflict_do_nothing(index_elements=['time_id'])
+    
+    conn.execute(do_nothing_stmt)
+
 def load_to_database(df: pd.DataFrame, table_name: str, engine: Engine, chunksize: int = 10000) -> None:
     """
-    Reine Lade-Logik (IO-Operation).
-    Nimmt ein fertiges DataFrame entgegen und persistiert es.
+    Reine Lade-Logik (IO-Operation) mit On-Conflict-Do-Nothing für Dimensionen.
     """
     logger.info(f"Schreibe {len(df)} Zeilen in Tabelle '{table_name}'...")
     try:
-        df.to_sql(table_name, con=engine, if_exists='append', index=False, chunksize=chunksize)
-        logger.info(f"✅ Tabelle '{table_name}' erfolgreich befüllt!")
-        
-    except IntegrityError as ie:
-        logger.error(f"❌ Integritätsfehler (z.B. Primary Key Konflikt) beim Schreiben in '{table_name}': {ie.orig}")
-        raise  # Den Fehler werfen, damit übergeordnete Orchestratoren (wie Airflow) den Job abbrechen.
+        # Der Parameter method=postgres_do_nothing ist hier die Magie!
+        df.to_sql(
+            table_name, 
+            con=engine, 
+            if_exists='append', 
+            index=False, 
+            chunksize=chunksize, 
+            method=postgres_do_nothing  # <--- HIER übergeben wir unsere PostgreSQL-Regel
+        )
+        logger.info(f"✅ Tabelle '{table_name}' erfolgreich befüllt (Duplikate wurden leise ignoriert)!")
         
     except Exception as e:
         logger.error(f"❌ Unerwarteter IO-Fehler beim Schreiben in '{table_name}': {e}")
@@ -67,17 +86,10 @@ def load_to_database(df: pd.DataFrame, table_name: str, engine: Engine, chunksiz
 
 
 def main():
-    """
-    Orchestrierungs-Schicht: Verbindet Extraktion/Transformation mit dem Laden.
-    """
     try:
-        # 1. Daten generieren (Testbar)
-        df_time = generate_dim_time(start_year=2024, end_year=2026)
-        
-        # 2. Infrastruktur initialisieren
+        # Generiere nun den gigantischen Zeitraum!
+        df_time = generate_dim_time(start_year=1950, end_year=2026)
         engine = get_db_engine()
-        
-        # 3. Daten laden
         load_to_database(df=df_time, table_name='dim_time', engine=engine)
         
     except Exception as e:

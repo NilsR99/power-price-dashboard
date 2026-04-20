@@ -38,5 +38,5 @@ jobs:
     
     - name: Unit Tests & Coverage ausführen
       run: |
-        # Dieser Befehl führt die Tests aus und druckt die Coverage-Tabelle in die GitHub-Logs
-        pytest tests/ -v --cov=merge_script --cov-report=term-missing
+        # Dieser Befehl führt die Tests aus
+        pytest tests/ -v  

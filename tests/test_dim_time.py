@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, ANY
 from sqlalchemy.exc import IntegrityError
 
 # Import der zu testenden Funktionen
@@ -59,7 +59,8 @@ def test_load_to_database_success(mock_to_sql):
         con=mock_engine, 
         if_exists='append', 
         index=False, 
-        chunksize=500
+        chunksize=500,
+        method=ANY
     )
 
 
@@ -99,6 +100,6 @@ def test_main_orchestration(mock_generate, mock_get_engine, mock_load):
     main()
 
     # Validierung der Prozesskette
-    mock_generate.assert_called_once_with(start_year=2024, end_year=2026)
+    mock_generate.assert_called_once_with(start_year=1950, end_year=2026)
     mock_get_engine.assert_called_once()
     mock_load.assert_called_once_with(df=mock_df, table_name='dim_time', engine=mock_engine)
