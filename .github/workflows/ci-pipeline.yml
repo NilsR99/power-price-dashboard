@@ -37,8 +37,6 @@ jobs:
         
     
     - name: Unit Tests & Coverage ausführen
-      env:
-        PYTHONPATH: .  # Teilt Python mit, dass das Root-Verzeichnis der Modul-Ursprung ist
       run: |
-        # Dieser Befehl führt die Tests aus
-        pytest tests/ -v
+        # Nutzt den Python-Interpreter, um den Projektpfad automatisch in sys.path zu laden
+        python -m pytest tests/ -v
