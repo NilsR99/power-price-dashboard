@@ -6,8 +6,8 @@ import os
 from api_response_scripts.fetch_smard_data import fetch_smard_data
 
 # Import der neuen Datenbank-Infrastruktur
-from src.warehousedb.connector import get_db_engine
-from src.warehousedb.operations import idempotent_upsert
+from src.warehouse.db.connector import get_db_engine
+from src.warehouse.db.operations import idempotent_upsert
 
 SMARD_CONFIG = [
     ("4169", "price_day_ahead"),

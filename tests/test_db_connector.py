@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import patch, MagicMock
 
-# Annahme: Der Pfad src.warehousedb.connector ist korrekt
-from src.warehousedb.connector import get_db_engine 
+# Annahme: Der Pfad src.warehouse.db.connector ist korrekt
+from src.warehouse.db.connector import get_db_engine 
 
-@patch("src.warehousedb.connector.create_engine")
-@patch("src.warehousedb.connector.os.getenv")
+@patch("src.warehouse.db.connector.create_engine")
+@patch("src.warehouse.db.connector.os.getenv")
 def test_get_db_engine_success(mock_getenv, mock_create_engine):
     # Setup der simulierten Umgebungsvariablen
     def mock_env_vars(key, default=None): # default Parameter hinzugefügt, falls os.getenv einen Default nutzt
@@ -30,7 +30,7 @@ def test_get_db_engine_success(mock_getenv, mock_create_engine):
     mock_create_engine.assert_called_once_with(expected_conn_string)
     assert isinstance(engine, MagicMock)
 
-@patch("src.warehousedb.connector.os.getenv")
+@patch("src.warehouse.db.connector.os.getenv")
 def test_get_db_engine_missing_credentials(mock_getenv):
     # Simuliere, dass Variablen fehlen (Rückgabe None)
     mock_getenv.return_value = None

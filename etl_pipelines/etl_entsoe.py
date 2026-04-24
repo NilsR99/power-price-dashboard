@@ -3,8 +3,8 @@ import logging
 
 from api_response_scripts.fetch_entsoe_data import fetch_entsoe_imbalance
 
-from src.warehousedb.connector import get_db_engine
-from src.warehousedb.operations import idempotent_upsert
+from src.warehouse.db.connector import get_db_engine
+from src.warehouse.db.operations import idempotent_upsert
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

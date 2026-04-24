@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 from unittest.mock import patch, MagicMock
-from src.warehousedb.operations import idempotent_upsert
+from src.warehouse.db.operations import idempotent_upsert
 
 def test_idempotent_upsert_missing_time_id():
     """Testet, ob die Methode ohne time_id sofort mit einem ValueError abbricht."""
