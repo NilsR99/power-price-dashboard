@@ -24,6 +24,13 @@ SELECT
     fa.actual_gas,
     fa.actual_hard_coal,
     fa.actual_brown_coal,
+    -- NEU: Die restlichen Energieträger
+    fa.actual_nuclear,
+    fa.actual_hydro,
+    fa.actual_biomass,
+    fa.actual_pumped_storage,
+    fa.actual_other_conventional,
+    fa.actual_other_renewables,
     
     -- 3. SMARD Prognosen
     ff.forecast_total_load,
@@ -51,4 +58,4 @@ LEFT JOIN fact_entsoe_imbalance fe ON dt.time_id = fe.time_id
 
 -- Performance-Filter: Begrenzt die View auf den relevanten Analyse-Zeitraum
 WHERE 
-    dt.year >= 2023 AND dt.year <= 2026;
+    dt.year >= 2015 AND dt.year <= 2025;

@@ -1,18 +1,22 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from warehouse.db.connector import get_db_engine
+
+# Annahme: Der Pfad warehouse.db.connector ist korrekt
+from warehouse.db.connector import get_db_engine 
 
 @patch("warehouse.db.connector.create_engine")
 @patch("warehouse.db.connector.os.getenv")
 def test_get_db_engine_success(mock_getenv, mock_create_engine):
     # Setup der simulierten Umgebungsvariablen
-    def mock_env_vars(key):
+    def mock_env_vars(key, default=None): # default Parameter hinzugefügt, falls os.getenv einen Default nutzt
         envs = {
             "POSTGRES_USER": "testuser",
             "POSTGRES_PASSWORD": "testpassword",
-            "POSTGRES_DB": "testdb"
+            "POSTGRES_DB": "testdb",
+            "POSTGRES_HOST": "testhost",
+            "POSTGRES_PORT": "1234"
         }
-        return envs.get(key)
+        return envs.get(key, default)
     
     mock_getenv.side_effect = mock_env_vars
     mock_create_engine.return_value = MagicMock() # Simuliere die Engine
@@ -20,8 +24,9 @@ def test_get_db_engine_success(mock_getenv, mock_create_engine):
     # Ausführung
     engine = get_db_engine()
 
-    # Validierung
-    expected_conn_string = "postgresql+psycopg2://testuser:testpassword@localhost:5432/testdb"
+    # Validierung: Der String muss nun exakt den simulierten Werten entsprechen
+    expected_conn_string = "postgresql+psycopg2://testuser:testpassword@testhost:1234/testdb"
+    
     mock_create_engine.assert_called_once_with(expected_conn_string)
     assert isinstance(engine, MagicMock)
 

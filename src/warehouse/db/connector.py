@@ -13,13 +13,10 @@ def get_db_engine() -> Engine:
     db_user = os.getenv("POSTGRES_USER")
     db_pass = os.getenv("POSTGRES_PASSWORD")
     db_name = os.getenv("POSTGRES_DB")
-    
-    # Da wir in WSL arbeiten und der Port 5432 freigegeben ist, 
-    # greifen wir über localhost auf den Docker-Container zu.
-    db_host = "localhost" 
-    db_port = "5432"
+    db_host = os.getenv("POSTGRES_HOST")
+    db_port = os.getenv("POSTGRES_PORT")
 
-    if not all([db_user, db_pass, db_name]):
+    if not all([db_user, db_pass, db_name, db_host, db_port]):
         raise ValueError("Kritischer Fehler: Datenbank-Credentials fehlen in der .env Datei!")
 
     # Konstruktion des Connection-Strings

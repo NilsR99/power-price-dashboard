@@ -47,4 +47,4 @@ def run_full_backfill(start_year: int, end_year: int):
     logger.info("Historical Backfill beendet!")
 
 if __name__ == "__main__":
-    run_full_backfill(start_year=2000, end_year=2026)
+    run_full_backfill(start_year=2015, end_year=2025)
