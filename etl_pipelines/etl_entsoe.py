@@ -3,8 +3,8 @@ import logging
 
 from api_response_scripts.fetch_entsoe_data import fetch_entsoe_imbalance
 
-from warehouse.db.connector import get_db_engine
-from warehouse.db.operations import idempotent_upsert
+from src.warehousedb.connector import get_db_engine
+from src.warehousedb.operations import idempotent_upsert
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -23,7 +23,7 @@ def extract_and_transform_entsoe(start_date: str, end_date: str) -> pd.DataFrame
         raise ValueError("Keine ENTSO-E Daten gefunden. API offline oder fehlerhafter Zeitraum?")
 
     # --- 2. TRANSFORM ---
-    logger.info("Transformiere ENTSO-E Daten für das Data Warehouse...")
+    logger.info("Transformiere ENTSO-E Daten für das Data src.warehouse..")
     df_transformed = df_raw.copy()
 
     # Zeitstempel und Primärschlüssel (time_id)

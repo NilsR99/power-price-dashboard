@@ -1,7 +1,7 @@
 import os
 import logging
 from sqlalchemy import text
-from warehouse.db.connector import get_db_engine
+from src.warehousedb.connector import get_db_engine
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

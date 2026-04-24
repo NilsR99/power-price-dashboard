@@ -6,8 +6,8 @@ import os
 from api_response_scripts.fetch_smard_data import fetch_smard_data
 
 # Import der etablierten Datenbank-Infrastruktur
-from warehouse.db.connector import get_db_engine
-from warehouse.db.operations import idempotent_upsert
+from src.warehousedb.connector import get_db_engine
+from src.warehousedb.operations import idempotent_upsert
 
 # Korrekte Konfiguration für Prognosen
 SMARD_FORECAST_CONFIG = [
@@ -59,7 +59,7 @@ def extract_and_transform_forecasts(start_date: str, end_date: str) -> pd.DataFr
         raise ValueError("Keine SMARD-Prognosedaten gefunden. API offline oder fehlerhafter Zeitraum?")
 
     # --- 2. TRANSFORM ---
-    logger.info("Transformiere Prognosedaten für das Data Warehouse...")
+    logger.info("Transformiere Prognosedaten für das Data src.warehouse..")
     df_transformed = df_raw.copy()
 
     # time_id generieren und Aufräumen

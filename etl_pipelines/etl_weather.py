@@ -3,8 +3,8 @@ import logging
 
 from api_response_scripts.fetch_weather_data import fetch_weather_data 
 
-from warehouse.db.connector import get_db_engine
-from warehouse.db.operations import idempotent_upsert
+from src.warehousedb.connector import get_db_engine
+from src.warehousedb.operations import idempotent_upsert
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,7 +24,7 @@ def extract_and_transform_weather(start_date: str, end_date: str) -> pd.DataFram
         raise ValueError("Keine Wetterdaten gefunden. API offline oder fehlerhafter Zeitraum?")
 
     # --- 2. TRANSFORM ---
-    logger.info("Transformiere Wetterdaten für das Data Warehouse...")
+    logger.info("Transformiere Wetterdaten für das Data src.warehouse..")
     df_transformed = df_raw.copy()
 
     # A. Zeitstempel standardisieren (UTC erzwingen, falls nicht schon passiert)

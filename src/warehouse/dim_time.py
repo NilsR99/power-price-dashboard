@@ -3,7 +3,7 @@ import logging
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
 from sqlalchemy.dialects.postgresql import insert
-from warehouse.db.connector import get_db_engine
+from src.warehousedb.connector import get_db_engine
 
 # Konfiguration des Loggers (Idealerweise zentral in einer config.py)
 logger = logging.getLogger(__name__)

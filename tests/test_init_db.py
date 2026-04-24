@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import patch, mock_open, MagicMock
-from warehouse.db.init_db import initialize_database
+from src.warehousedb.init_db import initialize_database
 
-@patch("warehouse.db.init_db.get_db_engine")
-@patch("warehouse.db.init_db.os.path.exists")
+@patch("src.warehousedb.init_db.get_db_engine")
+@patch("src.warehousedb.init_db.os.path.exists")
 @patch("builtins.open", new_callable=mock_open, read_data="CREATE TABLE test;")
 def test_initialize_database_success(mock_file, mock_exists, mock_get_engine):
     # Setup
@@ -24,9 +24,9 @@ def test_initialize_database_success(mock_file, mock_exists, mock_get_engine):
     assert mock_conn.execute.called
     assert mock_file.called
 
-@patch("warehouse.db.init_db.logging.error")
-@patch("warehouse.db.init_db.os.path.exists")
-@patch("warehouse.db.init_db.get_db_engine")
+@patch("src.warehousedb.init_db.logging.error")
+@patch("src.warehousedb.init_db.os.path.exists")
+@patch("src.warehousedb.init_db.get_db_engine")
 def test_initialize_database_file_not_found(mock_get_engine, mock_exists, mock_log_error):
     # Setup
     mock_exists.return_value = False

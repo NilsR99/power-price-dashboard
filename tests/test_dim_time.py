@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock, ANY
 from sqlalchemy.exc import IntegrityError
 
 # Import der zu testenden Funktionen
-from warehouse.dim_time import generate_dim_time, load_to_database, main
+from src.warehousedim_time import generate_dim_time, load_to_database, main
 
 # --- TESTS FÜR DIE REINE LOGIK (TRANSFORMATION) ---
 
@@ -82,9 +82,9 @@ def test_load_to_database_integrity_error(mock_to_sql):
 
 # --- TESTS FÜR DIE ORCHESTRIERUNG (MAIN) ---
 
-@patch("warehouse.dim_time.load_to_database")
-@patch("warehouse.dim_time.get_db_engine")
-@patch("warehouse.dim_time.generate_dim_time")
+@patch("src.warehousedim_time.load_to_database")
+@patch("src.warehousedim_time.get_db_engine")
+@patch("src.warehousedim_time.generate_dim_time")
 def test_main_orchestration(mock_generate, mock_get_engine, mock_load):
     """
     Testet, ob die main()-Funktion die Bausteine (Generieren, Engine holen, Laden)

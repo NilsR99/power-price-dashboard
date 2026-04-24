@@ -6,8 +6,8 @@ import os
 from api_response_scripts.fetch_smard_data import fetch_smard_data
 
 # Import der neuen Datenbank-Infrastruktur
-from warehouse.db.connector import get_db_engine
-from warehouse.db.operations import idempotent_upsert
+from src.warehousedb.connector import get_db_engine
+from src.warehousedb.operations import idempotent_upsert
 
 SMARD_CONFIG = [
     ("4169", "price_day_ahead"),
@@ -67,7 +67,7 @@ def extract_and_transform_smard(start_date: str, end_date: str) -> pd.DataFrame:
         raise ValueError("Keine SMARD-Daten gefunden. API offline oder fehlerhafter Zeitraum?")
 
     # --- 2. TRANSFORM (Auf das Star-Schema anpassen) ---
-    logger.info("Transformiere Daten für das Data Warehouse...")
+    logger.info("Transformiere Daten für das Data src.warehouse..")
     df_transformed = df_raw.copy()
 
     # A. Die time_id aus dem UTC-Datum generieren
