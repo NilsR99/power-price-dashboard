@@ -42,4 +42,4 @@ jobs:
         PYTHONPATH: ${{ github.workspace }}
       run: |
         # Ausführung über das Modul-System
-        python -m pytest tests/ -v
+        python -m pytest
