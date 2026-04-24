@@ -39,6 +39,6 @@ jobs:
     - name: Unit Tests & Coverage ausführen
       env:
         # Zwingt Python, das absolute GitHub-Workspace-Verzeichnis als Modul-Quelle zu nutzen
-        PYTHONPATH: ${{ github.workspace }}
+        PYTHONPATH: ${{ github.workspace }}/src
       run: |
         pytest tests/ -v
