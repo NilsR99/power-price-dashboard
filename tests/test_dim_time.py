@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock, ANY
 from sqlalchemy.exc import IntegrityError
 
 # Import der zu testenden Funktionen
-from src.warehousedim_time import generate_dim_time, load_to_database, main
+from src.warehouse.dim_time import generate_dim_time, load_to_database, main
 
 # --- TESTS FÜR DIE REINE LOGIK (TRANSFORMATION) ---
 
