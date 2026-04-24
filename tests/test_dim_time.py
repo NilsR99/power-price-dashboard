@@ -82,9 +82,9 @@ def test_load_to_database_integrity_error(mock_to_sql):
 
 # --- TESTS FÜR DIE ORCHESTRIERUNG (MAIN) ---
 
-@patch("src.warehousedim_time.load_to_database")
-@patch("src.warehousedim_time.get_db_engine")
-@patch("src.warehousedim_time.generate_dim_time")
+@patch("src.warehouse.dim_time.load_to_database")
+@patch("src.warehouse.dim_time.get_db_engine")
+@patch("src.warehouse.dim_time.generate_dim_time")
 def test_main_orchestration(mock_generate, mock_get_engine, mock_load):
     """
     Testet, ob die main()-Funktion die Bausteine (Generieren, Engine holen, Laden)
