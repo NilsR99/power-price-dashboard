@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: "3.13.7"
 
-    - name: Abhängigkeiten installieren (Die Krux!)
+    - name: Abhängigkeiten installieren
       run: |
         python -m pip install --upgrade pip
         pip install flake8
@@ -38,7 +38,8 @@ jobs:
     
     - name: Unit Tests & Coverage ausführen
       env:
-        # Zwingt Python, das absolute GitHub-Workspace-Verzeichnis als Modul-Quelle zu nutzen
-        PYTHONPATH: ${{ github.workspace }}/src
+        # Zwingt Python, das absolute GitHub-Workspace-Verzeichnis als Modul-Quelle zu nutzen (ohne /src)
+        PYTHONPATH: ${{ github.workspace }}
       run: |
-        pytest tests/ -v
+        # Nutzt den Interpreter für eine saubere Pfadauflösung
+        python -m pytest tests/ -v
