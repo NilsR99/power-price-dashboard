@@ -5,3 +5,8 @@ requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+markers = [
+  "integration: marks tests that require real external systems (db/network)"
+]
