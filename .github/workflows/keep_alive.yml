@@ -2,7 +2,7 @@ name: Keep Streamlit alive
 
 on:
   schedule:
-    - cron: '*/40 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:  # optional: manuell starten
 
 jobs:
